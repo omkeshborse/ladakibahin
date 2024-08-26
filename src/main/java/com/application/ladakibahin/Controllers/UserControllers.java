@@ -30,15 +30,14 @@ public class UserControllers {
 		System.out.println("User model information: " + user.toString());
 		System.out.println(user.getMobileNumber());
 		// Check if user already exists
-        if (userRepository.findByEmail(user.getEmail()) != null) {
-            model.addAttribute("error", "Email is already registered");
-            return "redirect:/register?message=Email is already registered";
-        }
-        if (userRepository.findByMobileNumber(user.getMobileNumber()) != null) {
-            model.addAttribute("error", "Mobile number is already registered");
-            return "redirect:/register?message=Mobile number is already registered";
-        }
-
+		if (userRepository.findByEmail(user.getEmail()) != null) {
+			model.addAttribute("error", "Email is already registered");
+			return "redirect:/register?message=Email is already registered";
+		}
+		if (userRepository.findByMobileNumber(user.getMobileNumber()) != null) {
+			model.addAttribute("error", "Mobile number is already registered");
+			return "redirect:/register?message=Mobile number is already registered";
+		}
 
 		// Validate email
 		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
@@ -94,8 +93,6 @@ public class UserControllers {
 			return "redirect:/register?message=Please enter your municipal corporation";
 		}
 
-		
-
 		// Proceed with registration if all validations pass
 		UserModel registeredUser = userServices.register(user);
 		model.addAttribute("email", registeredUser.getEmail());
@@ -105,24 +102,31 @@ public class UserControllers {
 
 	@PostMapping("/verify")
 	public String verifyUser(@RequestParam String email, @RequestParam String otp, Model model) {
-		boolean isVerified = userServices.verifyUser(email, otp);
-		System.out.println("Is verified in controllers: " + isVerified);
+		String verificationResult = userServices.verifyUser(email, otp);
+		System.out.println("Is verified in controllers: " + verificationResult);
 
-		if (isVerified) {
+		switch (verificationResult) {
+		case "success":
 			return "success"; // Redirect to the success page if OTP is correct
-		} else {
-			// If OTP is incorrect, display the error message and keep the user on the
-			// verification page
+		case "expired":
+			model.addAttribute("error", "OTP has expired. Please request a new OTP.");
+			break;
+		case "incorrect":
 			model.addAttribute("error", "Invalid OTP. Please try again.");
-			model.addAttribute("email", email); // Retain the email value for the retry
-			return "verify"; // Return to the OTP verification page
+			break;
+		default:
+			model.addAttribute("error", "An error occurred. Please try again.");
+			break;
 		}
+
+		model.addAttribute("email", email); // Retain the email value for the retry
+		model.addAttribute("username", "User");
+		return "verify"; // Return to the OTP verification page
 	}
-	
+
 	@GetMapping("/success")
 	public String success() {
-		return "success" ;
+		return "success";
 	}
-	
 
 }

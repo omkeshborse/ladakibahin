@@ -6,5 +6,5 @@ public interface userServices {
 	
 	
 	public UserModel register(UserModel user) ;
-	public boolean verifyUser(String email, String otp) ;
+	public String verifyUser(String email, String otp) ;
 }

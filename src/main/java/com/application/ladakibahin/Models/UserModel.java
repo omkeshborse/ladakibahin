@@ -1,5 +1,7 @@
 package com.application.ladakibahin.Models;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,6 +50,9 @@ public class UserModel {
 	private String user_type;
 //	status of user
 	private boolean isVerified;
+	
+	@Column(name = "otp_generated_time")
+    private LocalDateTime otpGeneratedTime;
 
 	public long getId() {
 		return id;
@@ -161,13 +166,23 @@ public class UserModel {
 		this.isVerified = isVerified;
 	}
 
+	public LocalDateTime getOtpGeneratedTime() {
+		return otpGeneratedTime;
+	}
+
+	public void setOtpGeneratedTime(LocalDateTime otpGeneratedTime) {
+		this.otpGeneratedTime = otpGeneratedTime;
+	}
+
 	@Override
 	public String toString() {
 		return "UserModel [id=" + id + ", full_name=" + full_name + ", mobileNumber=" + mobileNumber + ", email="
 				+ email + ", password=" + password + ", confrim_password=" + confrim_password + ", distric=" + distric
 				+ ", taluka=" + taluka + ", village=" + village + ", municipal_corporation=" + municipal_corporation
 				+ ", authorized_Person=" + authorized_Person + ", otp=" + otp + ", user_type=" + user_type
-				+ ", isVerified=" + isVerified + "]";
+				+ ", isVerified=" + isVerified + ", otpGeneratedTime=" + otpGeneratedTime + "]";
 	}
+
+	
 
 }

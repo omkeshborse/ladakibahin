@@ -1,5 +1,7 @@
 package com.application.ladakibahin.Dao;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ public class userDao implements userServices {
 		user.setOtp(otp);
 		user.setVerified(false);
 		user.setUser_type("user");
+		user.setOtpGeneratedTime(LocalDateTime.now());
 		UserModel savedUser = userRepository.save(user);
 		System.out.println(savedUser.getEmail());
 		sendOtpEmail(savedUser.getEmail(), otp);
@@ -47,24 +50,26 @@ public class userDao implements userServices {
 		mailSender.send(message);
 	}
 
-	public boolean verifyUser(String email, String otp) {
-		System.out.println("otp verification");
-		UserModel user = userRepository.findByEmail(email) ;
-		System.out.println(user);
-		
-		System.out.println("user out put");
-		System.out.println(user != null);
-		System.out.println("check otp equal or not");
-		System.out.println(user.getOtp().equals(otp));
-		if (user != null && user.getOtp().equals(otp)) {
-			user.setVerified(true);
-			userRepository.save(user);
-			System.out.println();
-			return true;
+	public String verifyUser(String email, String otp) {
+		UserModel user = userRepository.findByEmail(email);
+		if (user != null) {
+			LocalDateTime otpGeneratedTime = user.getOtpGeneratedTime();
+			LocalDateTime now = LocalDateTime.now();
+
+			// Check if OTP is expired
+			if (Duration.between(otpGeneratedTime, now).toMinutes() > 5) {
+				return "expired";
+			}
+
+			// Check if OTP matches
+			if (user.getOtp().equals(otp)) {
+				user.setVerified(true);
+				userRepository.save(user);
+				return "success";
+			} else {
+				return "incorrect";
+			}
 		}
-		return false;
-		
+		return "error"; // General error case
 	}
-	
-	
 }
