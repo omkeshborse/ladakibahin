@@ -11,14 +11,30 @@ public class StaticPages {
 		return "index";
 	}
 	
+	@GetMapping("/index_en")
+	public String indexEn(){
+		return "index_en";
+	}
+	
 	@GetMapping("/scheme_information")
 	public String scheme_information(){
 		return "scheme_information";
 	}
 	
+	@GetMapping("/scheme_information_en")
+	public String scheme_informationEn(){
+		return "scheme_information_en";
+	}
+	
+	
 	@GetMapping("/required_documents")
 	public String required_documents(){
 		return "required_documents";
+	}
+	
+	@GetMapping("/required_documents_en")
+	public String required_documentsEn(){
+		return "required_documents_en";
 	}
 	
 	@GetMapping("/login")

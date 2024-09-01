@@ -88,7 +88,13 @@
           </p>
         </div>
 
-        <p class="my-2 mr-2 position-relative end">त्रुटी नोंदवा</p>
+       <div>
+            
+            <p class="my-2 mr-2 position-relative end">
+            <a style="color: #ffffff" href="./required_documents_en"> English <i class="fa-solid fa-globe fa-rotate-by mr-5" ></i></a>
+            <a class="nav-link d-inline-block" href="./adminlogin" style="color: white;">प्रशासक लॉगिन</a>
+			</p>
+        </div>
       </div>
 
       <!-- Logo section header -->

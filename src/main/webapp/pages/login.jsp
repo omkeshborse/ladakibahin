@@ -87,7 +87,7 @@
 
 					<p>
 						<span class="text">Forgot Password?</span> <a
-							href="./forgot-password" class="create-account-link">Click
+							href="./forgotPassword" class="create-account-link">Click
 							here</a>
 					</p>
 				</form>

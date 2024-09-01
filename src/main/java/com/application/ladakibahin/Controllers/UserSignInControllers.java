@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -37,7 +38,6 @@ public class UserSignInControllers {
 		Pattern passwordPattern = Pattern.compile(passwordRegex);
 		Matcher passwordMatcher = passwordPattern.matcher(user.getPassword());
 
-		
 		if (!passwordMatcher.matches()) {
 			model.addAttribute("error",
 					"Invalid password format. Must be 8-25 characters long, with at least one uppercase letter, one digit, and one special character.");
@@ -52,8 +52,7 @@ public class UserSignInControllers {
 			model.addAttribute("error", "Email is not registered Please register first");
 			return "redirect:/register?message=Email is not registered Please register first";
 		}
-		
-		
+
 		System.out.println("Password comparsion");
 		if (!(userExits.getPassword().equals(user.getPassword()))) {
 			model.addAttribute("error", "user credentials does not match , please enter valid credentials");
@@ -62,5 +61,7 @@ public class UserSignInControllers {
 
 		return "dashboard";
 	}
+
+	
 
 }
